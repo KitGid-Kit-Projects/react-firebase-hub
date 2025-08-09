@@ -8,8 +8,8 @@ import { Separator } from '@/components/ui/separator';
 import { Github, Mail, Eye, EyeOff } from 'lucide-react';
 import useLoginPage from '@/hooks/loginPage/useLoginPage';
 
-const LoginPage: React.FC = () => {
 
+const LoginPage: React.FC = () => {
 const {loading, setLoading,showPassword, setShowPassword,resetEmail, setResetEmail,loginForm,signupForm,
         handleLogin,handleSignup,handleGoogleSignIn,handleGithubSignIn
     }=useLoginPage()
