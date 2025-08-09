@@ -6,96 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Navigate } from 'react-router-dom';
 import { Github, Mail, Eye, EyeOff } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-
-interface LoginForm {
-  email: string;
-  password: string;
-}
-
-interface SignupForm {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  displayName: string;
-}
+import useLoginPage from '@/hooks/loginPage/useLoginPage';
 
 const LoginPage: React.FC = () => {
-  const { currentUser, signIn, signUp, signInWithGoogle, signInWithGithub, resetPassword } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
 
-  const loginForm = useForm<LoginForm>();
-  const signupForm = useForm<SignupForm>();
-
-  if (currentUser) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  const handleLogin = async (data: LoginForm) => {
-    try {
-      setLoading(true);
-      await signIn(data.email, data.password);
-    } catch (error) {
-      console.error('Login error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSignup = async (data: SignupForm) => {
-    if (data.password !== data.confirmPassword) {
-      signupForm.setError('confirmPassword', { message: 'Passwords do not match' });
-      return;
-    }
-
-    try {
-      setLoading(true);
-      await signUp(data.email, data.password, data.displayName);
-    } catch (error) {
-      console.error('Signup error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      setLoading(true);
-      await signInWithGoogle();
-    } catch (error) {
-      console.error('Google sign in error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGithubSignIn = async () => {
-    try {
-      setLoading(true);
-      await signInWithGithub();
-    } catch (error) {
-      console.error('GitHub sign in error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResetPassword = async () => {
-    if (!resetEmail) return;
-    
-    try {
-      setLoading(true);
-      await resetPassword(resetEmail);
-    } catch (error) {
-      console.error('Reset password error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {loading, setLoading,showPassword, setShowPassword,resetEmail, setResetEmail,loginForm,signupForm,
+        handleLogin,handleSignup,handleGoogleSignIn,handleGithubSignIn}=useLoginPage()
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-primary p-4">
@@ -163,25 +80,6 @@ const LoginPage: React.FC = () => {
                   </Button>
                 </form>
 
-                <div className="space-y-2">
-                  <Label htmlFor="resetEmail">Forgot your password?</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="resetEmail"
-                      type="email"
-                      placeholder="Enter email for reset"
-                      value={resetEmail}
-                      onChange={(e) => setResetEmail(e.target.value)}
-                    />
-                    <Button 
-                      variant="outline" 
-                      onClick={handleResetPassword}
-                      disabled={!resetEmail || loading}
-                    >
-                      Reset
-                    </Button>
-                  </div>
-                </div>
               </TabsContent>
 
               <TabsContent value="signup" className="space-y-4">

@@ -5,18 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import DataPage from "./pages/DataPage";
-import ProfilePage from "./pages/ProfilePage";
-import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { currentUser } = useAuth();
-  return currentUser ? <>{children}</> : <Navigate to="/login" replace />;
-};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -28,38 +19,7 @@ const App = () => (
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <DashboardPage />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/data" 
-              element={
-                <ProtectedRoute>
-                  <DataPage />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/profile" 
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/settings" 
-              element={
-                <ProtectedRoute>
-                  <SettingsPage />
-                </ProtectedRoute>
-              } 
-            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
