@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import NotFound from "./pages/NotFound";
+import DataPage from "./pages/DataPage";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <DashboardPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/data" 
+              element={
+                <ProtectedRoute>
+                  <DataPage />
                 </ProtectedRoute>
               } 
             />
