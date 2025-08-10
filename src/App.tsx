@@ -14,7 +14,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { currentUser } = useAuth();
   return currentUser ? <>{children}</> : <Navigate to="/login" replace />;
 };
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
